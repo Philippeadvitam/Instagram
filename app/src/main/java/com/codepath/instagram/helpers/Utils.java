@@ -78,4 +78,15 @@ public class Utils {
         }
         return jsonArray;
     }
+
+    public static List<InstagramPost> fetchPosts(Context context, String fileName) {
+        try {
+            return decodePostsFromJsonResponse(loadJsonFromAsset(context, fileName));
+        } catch (IOException e){
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

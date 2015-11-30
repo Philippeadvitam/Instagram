@@ -6,15 +6,20 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.codepath.instagram.R;
+import com.codepath.instagram.helpers.Utils;
+import com.codepath.instagram.models.InstagramPost;
+
+import java.util.List;
 
 
 public class HomeActivity extends AppCompatActivity {
     private static final String TAG = "HomeActivity";
-
+    public List<InstagramPost> instagramPosts;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        instagramPosts = Utils.fetchPosts(this, "popular.json");
     }
 
     @Override
