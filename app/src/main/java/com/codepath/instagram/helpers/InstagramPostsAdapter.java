@@ -5,10 +5,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.codepath.instagram.R;
 import com.codepath.instagram.models.InstagramPost;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -17,6 +19,7 @@ import java.util.ArrayList;
  */
 public class InstagramPostsAdapter extends RecyclerView.Adapter<InstagramPostsAdapter.PostItemHolder>{
     ArrayList<InstagramPost> posts;
+    static Context context;
 
     public InstagramPostsAdapter(ArrayList<InstagramPost> posts) {
         this.posts = posts;
@@ -24,7 +27,7 @@ public class InstagramPostsAdapter extends RecyclerView.Adapter<InstagramPostsAd
 
     @Override
     public PostItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Context context = parent.getContext();
+        context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
 
         // Inflate the custom layout
@@ -38,8 +41,8 @@ public class InstagramPostsAdapter extends RecyclerView.Adapter<InstagramPostsAd
     @Override
     public void onBindViewHolder(PostItemHolder holder, int position) {
         InstagramPost post = posts.get(position);
-        holder.userName.setText(post.user.fullName);
-
+        holder.userName.setText(post.user.userName);
+        Picasso.with(context).load(post.user.profilePictureUrl).into(holder.avatar);
     }
 
     @Override
@@ -49,9 +52,12 @@ public class InstagramPostsAdapter extends RecyclerView.Adapter<InstagramPostsAd
 
     public static class PostItemHolder extends RecyclerView.ViewHolder {
         TextView userName;
+        ImageView avatar;
         public PostItemHolder(View itemView) {
             super(itemView);
             userName = (TextView) itemView.findViewById(R.id.userName);
+            avatar = (ImageView) itemView.findViewById(R.id.avatar);
+
 
         }
     }
