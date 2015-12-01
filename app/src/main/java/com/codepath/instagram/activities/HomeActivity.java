@@ -1,25 +1,40 @@
 package com.codepath.instagram.activities;
 
+import android.graphics.Movie;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.codepath.instagram.R;
+import com.codepath.instagram.helpers.InstagramPostsAdapter;
 import com.codepath.instagram.helpers.Utils;
 import com.codepath.instagram.models.InstagramPost;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 public class HomeActivity extends AppCompatActivity {
     private static final String TAG = "HomeActivity";
     public List<InstagramPost> instagramPosts;
+    RecyclerView rvPosts;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         instagramPosts = Utils.fetchPosts(this, "popular.json");
+
+        rvPosts = (RecyclerView) findViewById(R.id.rvPosts);
+        InstagramPostsAdapter adapter = new InstagramPostsAdapter((ArrayList<InstagramPost>) instagramPosts);
+        rvPosts.setAdapter(adapter);
+        rvPosts.setLayoutManager(new LinearLayoutManager(this));
+
+
     }
 
     @Override
