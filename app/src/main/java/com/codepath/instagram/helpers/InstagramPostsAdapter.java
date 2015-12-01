@@ -1,7 +1,9 @@
 package com.codepath.instagram.helpers;
 
 import android.content.Context;
+import android.media.Image;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,8 @@ import android.widget.TextView;
 import com.codepath.instagram.R;
 import com.codepath.instagram.models.InstagramPost;
 import com.squareup.picasso.Picasso;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -43,6 +47,13 @@ public class InstagramPostsAdapter extends RecyclerView.Adapter<InstagramPostsAd
         InstagramPost post = posts.get(position);
         holder.userName.setText(post.user.userName);
         Picasso.with(context).load(post.user.profilePictureUrl).into(holder.avatar);
+        Picasso.with(context).load(post.image.imageUrl)
+                .placeholder(R.drawable.gray_rectangle)
+                .resize(1000, 0)
+                .into(holder.image);
+        holder.date.setText(DateUtils.getRelativeTimeSpanString(post.createdTime * 1000));
+        holder.likes.setText(post.likesCount + " likes");
+        holder.caption.setText(post.caption);
     }
 
     @Override
@@ -53,12 +64,18 @@ public class InstagramPostsAdapter extends RecyclerView.Adapter<InstagramPostsAd
     public static class PostItemHolder extends RecyclerView.ViewHolder {
         TextView userName;
         ImageView avatar;
+        ImageView image;
+        TextView date;
+        TextView likes;
+        TextView caption;
         public PostItemHolder(View itemView) {
             super(itemView);
             userName = (TextView) itemView.findViewById(R.id.userName);
             avatar = (ImageView) itemView.findViewById(R.id.avatar);
-
-
+            image = (ImageView) itemView.findViewById(R.id.image);
+            date = (TextView) itemView.findViewById(R.id.date);
+            likes = (TextView) itemView.findViewById(R.id.likes);
+            caption = (TextView) itemView.findViewById(R.id.caption);
         }
     }
 }
