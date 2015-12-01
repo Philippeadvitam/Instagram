@@ -16,3 +16,6 @@ This is the starter project for the Instagram Client Project.
 * By the end of the project, you will have built something that looks like the following:
 
   ![Imgur](http://i.imgur.com/4SWlsQA.gif)
+
+## My Implementation - Day 1
+  ![Imgur](http://i.imgur.com/xhAxUWT.gif)
