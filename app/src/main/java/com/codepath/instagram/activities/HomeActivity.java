@@ -1,20 +1,22 @@
 package com.codepath.instagram.activities;
 
-import android.graphics.Movie;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.codepath.instagram.R;
 import com.codepath.instagram.helpers.InstagramPostsAdapter;
 import com.codepath.instagram.helpers.Utils;
+import com.codepath.instagram.models.InstagramClient;
 import com.codepath.instagram.models.InstagramPost;
+import com.loopj.android.http.JsonHttpResponseHandler;
 
-import java.util.ArrayList;
+import org.apache.http.Header;
+import org.json.JSONObject;
+
 import java.util.List;
 
 
@@ -27,12 +29,17 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        instagramPosts = Utils.fetchPosts(this, "popular.json");
+        InstagramClient.getPopularFeed(new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                fetchCode(response);
+            }
 
-        rvPosts = (RecyclerView) findViewById(R.id.rvPosts);
-        InstagramPostsAdapter adapter = new InstagramPostsAdapter((ArrayList<InstagramPost>) instagramPosts);
-        rvPosts.setAdapter(adapter);
-        rvPosts.setLayoutManager(new LinearLayoutManager(this));
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String res, Throwable t) {
+                // called when response HTTP status is "4XX" (eg. 401, 403, 404)
+            }
+        });
 
 
     }
@@ -57,5 +64,13 @@ public class HomeActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void fetchCode(JSONObject response) {
+        rvPosts = (RecyclerView) findViewById(R.id.rvPosts);
+        instagramPosts = Utils.decodePostsFromJsonResponse(response);
+        InstagramPostsAdapter adapter = new InstagramPostsAdapter(instagramPosts);
+        rvPosts.setAdapter(adapter);
+        rvPosts.setLayoutManager(new LinearLayoutManager(this));
     }
 }

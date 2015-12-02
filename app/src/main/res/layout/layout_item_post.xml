@@ -1,75 +1,143 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:paddingTop="10dp">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:id="@+id/userName"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/avatar"
         android:paddingLeft="8dp"
         android:textColor="@color/blue_text"
-        android:textSize="14sp" />
-
-    <ImageView
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:id="@+id/avatar"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="14dp" />
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/image"
-        android:layout_below="@+id/avatar"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentLeft="true"
-        android:layout_marginTop="52dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:id="@+id/date"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="14dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:id="@+id/likes"
-        android:layout_below="@+id/image"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="14dp"
-        android:layout_marginTop="10dp"
-        android:drawableLeft="@drawable/ic_small_heart_filled"
-        android:drawablePadding="5dp"
-        android:textColor="@color/blue_text"
-        android:textSize="14sp"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:id="@+id/caption"
-        android:layout_below="@+id/likes"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="14dp"
-        android:paddingTop="4dp"
-        android:paddingBottom="24dp"
-        android:textColor="@color/gray_text"
         android:textSize="14sp"
-        android:lineSpacingMultiplier="1.2"/>
+        android:layout_alignBottom="@+id/date"
+        android:layout_toRightOf="@+id/profile_picture"
+        android:layout_toEndOf="@+id/profile_picture" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/image"
+            android:layout_marginTop="52dp" />
+
+        <ImageView
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:id="@+id/like_icon"
+            android:paddingTop="10dp"
+            android:src="@drawable/ic_heart"
+            android:layout_below="@+id/image"
+            android:layout_alignLeft="@+id/gray_line"
+            android:layout_alignStart="@+id/gray_line" />
+
+        <ImageView
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:id="@+id/comment_icon"
+            android:paddingLeft="22dp"
+            android:paddingTop="10dp"
+            android:src="@drawable/ic_comment"
+            android:layout_below="@+id/image"
+            android:layout_toRightOf="@+id/like_icon"
+            android:layout_toEndOf="@+id/like_icon" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:paddingTop="10dp"
+            android:layout_below="@+id/like_icon"
+            android:id="@+id/gray_line"
+            android:layout_marginLeft="14dp"
+            android:layout_marginRight="14dp"
+            android:visibility="visible" />
+
+        <ImageView
+            android:layout_width="8dp"
+            android:layout_height="22dp"
+            android:id="@+id/more_icon"
+            android:layout_below="@+id/image"
+            android:paddingTop="10dp"
+            android:src="@drawable/ic_more_dots"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="14dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:id="@+id/date"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="14dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:id="@+id/likes"
+            android:drawableLeft="@drawable/ic_small_heart_filled"
+            android:drawablePadding="5dp"
+            android:textColor="@color/blue_text"
+            android:textSize="14sp"
+            android:layout_below="@+id/gray_line"
+            android:layout_alignLeft="@+id/profile_picture"
+            android:layout_alignStart="@+id/profile_picture"
+            android:paddingTop="10dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:id="@+id/caption"
+            android:paddingTop="10dp"
+            android:textColor="@color/gray_text"
+            android:textSize="14sp"
+            android:lineSpacingMultiplier="1.2"
+            android:layout_below="@+id/likes"
+            android:layout_alignLeft="@+id/likes"
+            android:layout_alignStart="@+id/likes" />
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/profile_picture"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:scaleType="fitCenter"
+            app:riv_corner_radius="30dip"
+            app:riv_border_width="1dip"
+            app:riv_border_color="#333333"
+            app:riv_mutate_background="true"
+            app:riv_tile_mode="repeat"
+            app:riv_oval="true"
+            android:layout_marginLeft="14dp" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/llComments"
+            android:layout_below="@+id/comment_count"
+            android:layout_alignRight="@+id/date"
+            android:layout_alignEnd="@+id/date"
+            android:paddingTop="10dp"
+            android:paddingBottom="24dp"
+            android:layout_marginLeft="14dp"></LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="26dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/comment_count"
+        android:layout_below="@+id/caption"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="14dp"
+        android:paddingTop="10dp"
+        android:textSize="14sp"
+        android:textColor="@color/light_gray_text" />
 
 </RelativeLayout>
