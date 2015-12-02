@@ -17,5 +17,10 @@ This is the starter project for the Instagram Client Project.
 
   ![Imgur](http://i.imgur.com/4SWlsQA.gif)
 
+
 ## My Implementation - Day 1
   ![Imgur](http://i.imgur.com/xhAxUWT.gif)
+  
+  
+## My Implementation - Day 2  
+  ![imgur](http://i.imgur.com/dbfD1rr.gif)
