@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.codepath.instagram.R;
@@ -102,7 +103,6 @@ public class HomeActivity extends AppCompatActivity {
         } else {
             Toast.makeText(HomeActivity.this, "error sharing image",  Toast.LENGTH_LONG).show();
         }
-
     }
 
     private Uri getLocalBitmapUri(ImageView imageView) {
@@ -129,5 +129,12 @@ public class HomeActivity extends AppCompatActivity {
         }
         return bmpUri;
 
+    }
+
+    public void clickAllComment(View view) {
+        InstagramPost post = InstagramPostsAdapter.getCurrentPost();
+        Intent intent = new Intent(HomeActivity.this, CommentActivity.class);
+        intent.putExtra("mediaId", post.mediaId);
+        startActivity(intent);
     }
 }

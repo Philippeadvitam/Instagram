@@ -138,6 +138,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginLeft="14dp"
+        android:onClick="clickAllComment"
         android:paddingTop="10dp"
         android:textSize="14sp"
         android:textColor="@color/light_gray_text" />

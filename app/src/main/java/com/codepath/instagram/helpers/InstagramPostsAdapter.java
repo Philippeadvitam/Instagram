@@ -23,7 +23,7 @@ import java.util.List;
 public class InstagramPostsAdapter extends RecyclerView.Adapter<InstagramPostsAdapter.PostItemHolder>{
     List<InstagramPost> posts;
     static Context context;
-
+    public static InstagramPost curPost;
     public InstagramPostsAdapter(List<InstagramPost> posts) {
         this.posts = posts;
     }
@@ -32,8 +32,6 @@ public class InstagramPostsAdapter extends RecyclerView.Adapter<InstagramPostsAd
     public PostItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
-
-        //LayoutInflater.from(context).inflate(R.layout.layout_item_text_comment, llComments, false));
 
         // Inflate the custom layout
         View contactView = inflater.inflate(R.layout.layout_item_post, parent, false);
@@ -46,6 +44,7 @@ public class InstagramPostsAdapter extends RecyclerView.Adapter<InstagramPostsAd
     @Override
     public void onBindViewHolder(PostItemHolder holder, int position) {
         InstagramPost post = posts.get(position);
+        curPost = post;
         holder.userName.setText(post.user.userName);
         Picasso.with(context).load(post.user.profilePictureUrl).into(holder.profile_picture);
         Picasso.with(context).load(post.image.imageUrl)
@@ -90,5 +89,9 @@ public class InstagramPostsAdapter extends RecyclerView.Adapter<InstagramPostsAd
             llComments = (LinearLayout) itemView.findViewById(R.id.llComments);
             comment_count = (TextView) itemView.findViewById(R.id.comment_count);
         }
+    }
+
+    public static InstagramPost getCurrentPost() {
+        return curPost;
     }
 }

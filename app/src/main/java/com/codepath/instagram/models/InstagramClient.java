@@ -15,4 +15,12 @@ public class InstagramClient {
         RequestParams params = new RequestParams();
         client.get(url, params, handler);
     }
+
+    public static void getAllComments(String mediaId, JsonHttpResponseHandler handler) {
+        String url = "https://api.instagram.com/v1/media/"
+                + mediaId + "/comments?client_id=e05c462ebd86446ea48a5af73769b602";
+        AsyncHttpClient client = new AsyncHttpClient();
+        RequestParams params = new RequestParams();
+        client.get(url, params, handler);
+    }
 }
