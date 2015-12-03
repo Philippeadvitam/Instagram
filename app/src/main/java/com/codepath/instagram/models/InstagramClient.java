@@ -40,4 +40,10 @@ public class InstagramClient extends OAuthBaseClient {
         RequestParams params = new RequestParams();
         client.get(url, params, handler);
     }
+
+    public void getSearchUserResults(String searchTerm, JsonHttpResponseHandler handler) {
+        String url = "https://api.instagram.com/v1/users/search?q=" + searchTerm;
+        RequestParams params = new RequestParams();
+        client.get(url, params, handler);
+    }
 }

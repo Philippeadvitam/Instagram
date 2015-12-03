@@ -24,3 +24,6 @@ This is the starter project for the Instagram Client Project.
   
 ## My Implementation - Day 2  
   ![imgur](http://i.imgur.com/dbfD1rr.gif)
+  
+## My Implementation - Day 3
+  ![imgur](http://i.imgur.com/EBZL7mi.gif)

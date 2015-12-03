@@ -44,9 +44,9 @@ public class HomeFragmentStatePagerAdapter extends SmartFragmentStatePagerAdapte
                 return PostsFragment.newInstance();
             case 1:
                 return SearchUsersResultFragment.newInstance();
+            default:
+                return PostsFragment.newInstance();
         }
-        return PostsFragment.newInstance();
-
     }
 
     @Override
