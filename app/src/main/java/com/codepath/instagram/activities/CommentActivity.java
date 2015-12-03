@@ -28,7 +28,8 @@ public class CommentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comment);
         mediaId = getIntent().getStringExtra("mediaId");
-        InstagramClient.getAllComments(mediaId, new JsonHttpResponseHandler() {
+        InstagramClient instagramClient = new InstagramClient(CommentActivity.this);
+        instagramClient.getAllComments(mediaId, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 fetchCode(response);

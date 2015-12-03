@@ -4,8 +4,12 @@
     android:layout_height="match_parent"
     tools:context=".HomeActivity">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rvPosts"
+
+    <fragment
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:name="com.codepath.instagram.Fragments.PostsFragment"
+        android:id="@+id/postsFragment"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>

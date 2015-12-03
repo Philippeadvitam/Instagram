@@ -42,9 +42,9 @@ public class InstagramCommentsAdapter extends RecyclerView.Adapter<InstagramComm
     @Override
     public void onBindViewHolder(InstagramCommentsAdapter.PostItemHolder holder, int position) {
         InstagramComment comment = comments.get(position);
-        holder.commenter.setText(comment.user.userName);
+        holder.commenter.setText(comment.user.userName + " " + comment.text);
         Picasso.with(context).load(comment.user.profilePictureUrl).into(holder.avatar);
-        holder.commentContent.setText(comment.text);
+        //holder.commentContent.setText(comment.text);
         holder.commentTime.setText(DateUtils.getRelativeTimeSpanString(comment.createdTime * 1000));
     }
 
