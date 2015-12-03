@@ -3,8 +3,10 @@ package com.codepath.instagram.Fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.codepath.instagram.R;
+import com.codepath.instagram.activities.HomeActivity;
 import com.codepath.instagram.core.MainApplication;
 import com.codepath.instagram.helpers.InstagramPostsAdapter;
 import com.codepath.instagram.helpers.SearchUserResultsAdapter;
@@ -49,15 +52,14 @@ public class SearchUsersResultFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_search, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_search:
-                Toast.makeText(getActivity(),"search_icon",Toast.LENGTH_LONG).show();
+        final MenuItem searchItem = menu.findItem(R.id.action_search);
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                // Fetch the data remotely
                 InstagramClient client = MainApplication.getRestClient();
-                client.getSearchUserResults("username", new JsonHttpResponseHandler() {
+                client.getSearchUserResults(query, new JsonHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
 
@@ -70,9 +72,26 @@ public class SearchUsersResultFragment extends Fragment {
                         Toast.makeText(getActivity(), "onFailure of getPopularFeed", Toast.LENGTH_LONG).show();
                     }
                 });
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+                // Reset SearchView
+                searchView.clearFocus();
+                searchView.setQuery("", false);
+                searchView.setIconified(true);
+                searchItem.collapseActionView();
+                // Set activity title to search query
+                //HomeActivity.this.setTitle(query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
+            }
+        });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return true;
     }
 
     private void decodeSearch(JSONObject response) {

@@ -62,9 +62,6 @@ public class HomeActivity extends AppCompatActivity {
         if (id == R.id.action_settings) {
             return true;
         }
-        if (id == R.id.action_settings) {
-            Toast.makeText(HomeActivity.this,"search_icon",Toast.LENGTH_LONG).show();
-        }
 
         return super.onOptionsItemSelected(item);
     }

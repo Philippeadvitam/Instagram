@@ -33,7 +33,7 @@ public class SearchUserResultsAdapter extends RecyclerView.Adapter<SearchUserRes
         LayoutInflater inflater = LayoutInflater.from(context);
 
         // Inflate the custom layout
-        View contactView = inflater.inflate(R.layout.layout_item_post, parent, false);
+        View contactView = inflater.inflate(R.layout.layout_item_search_user, parent, false);
 
         // Return a new holder instance
         PostItemHolder itemHolder = new PostItemHolder(contactView);
