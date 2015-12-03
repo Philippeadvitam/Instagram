@@ -10,6 +10,7 @@ import android.text.SpannableString;
 import android.text.style.ImageSpan;
 
 import com.codepath.instagram.Fragments.PostsFragment;
+import com.codepath.instagram.Fragments.SearchUsersResultFragment;
 import com.codepath.instagram.R;
 
 /**
@@ -38,7 +39,14 @@ public class HomeFragmentStatePagerAdapter extends SmartFragmentStatePagerAdapte
 
     @Override
     public Fragment getItem(int position) {
-        return PostsFragment.newInstance(0);
+        switch (position) {
+            case 0:
+                return PostsFragment.newInstance();
+            case 1:
+                return SearchUsersResultFragment.newInstance();
+        }
+        return PostsFragment.newInstance();
+
     }
 
     @Override

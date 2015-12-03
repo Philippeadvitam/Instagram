@@ -56,7 +56,7 @@ public class PostsFragment extends Fragment {
         rvPosts.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
-    public static PostsFragment newInstance(int page) {
+    public static PostsFragment newInstance() {
         PostsFragment postsFragment = new PostsFragment();
         return postsFragment;
     }
