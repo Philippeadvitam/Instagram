@@ -7,6 +7,8 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,7 +17,10 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.codepath.instagram.R;
+import com.codepath.instagram.core.MainApplication;
+import com.codepath.instagram.helpers.HomeFragmentStatePagerAdapter;
 import com.codepath.instagram.helpers.InstagramPostsAdapter;
+import com.codepath.instagram.models.InstagramClient;
 import com.codepath.instagram.models.InstagramPost;
 
 import java.io.File;
@@ -30,6 +35,13 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        // Get the ViewPager and set it's PagerAdapter so that it can display items
+        ViewPager viewPager = (ViewPager) findViewById(R.id.vpPager);
+        viewPager.setAdapter(new HomeFragmentStatePagerAdapter(getSupportFragmentManager(), HomeActivity.this));
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(viewPager);
     }
 
     @Override

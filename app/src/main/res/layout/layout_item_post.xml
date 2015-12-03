@@ -90,7 +90,7 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="2dp"
+        android:layout_height="1dp"
         android:layout_marginTop="10dp"
         android:background="@color/light_gray_separator_line"
         android:layout_below="@+id/like_icon"
@@ -153,7 +153,8 @@
             android:layout_marginTop="10dp"
             android:layout_marginBottom="24dp"
             android:layout_marginLeft="14dp"
-            android:layout_marginRight="14dp"></LinearLayout>
+            android:layout_marginRight="14dp">
+        </LinearLayout>
 
 
 

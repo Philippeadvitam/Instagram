@@ -42,7 +42,7 @@ public class PostsFragment extends Fragment {
             @Override
             public void onFailure(int statusCode, Header[] headers, String res, Throwable t) {
                 // called when response HTTP status is "4XX" (eg. 401, 403, 404)
-                Toast.makeText(getActivity(), "onFailure of getPOpularFeed", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "onFailure of getPopularFeed", Toast.LENGTH_LONG).show();
             }
         });
         return view;
@@ -55,4 +55,10 @@ public class PostsFragment extends Fragment {
         rvPosts.setAdapter(adapter);
         rvPosts.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
+
+    public static PostsFragment newInstance(int page) {
+        PostsFragment postsFragment = new PostsFragment();
+        return postsFragment;
+    }
+
 }
