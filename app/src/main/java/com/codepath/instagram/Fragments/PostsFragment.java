@@ -1,5 +1,8 @@
 package com.codepath.instagram.Fragments;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.codepath.instagram.R;
+import com.codepath.instagram.activities.HomeActivity;
 import com.codepath.instagram.helpers.InstagramPostsAdapter;
 import com.codepath.instagram.helpers.Utils;
 import com.codepath.instagram.models.InstagramClient;
@@ -24,6 +28,7 @@ import org.apache.http.Header;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,6 +37,7 @@ import java.util.List;
 public class PostsFragment extends Fragment {
     private SwipeRefreshLayout swipeContainer;
     public List<InstagramPost> instagramPosts;
+    InstagramPostsAdapter adapter;
     RecyclerView rvPosts;
     InstagramClientDatabase database;
 
@@ -39,10 +45,20 @@ public class PostsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_posts, container, false);
+        rvPosts = (RecyclerView) view.findViewById(R.id.rvPosts);
+        rvPosts.setLayoutManager(new LinearLayoutManager(getActivity()));
+
         final InstagramClient instagramClient = new InstagramClient(getActivity());
         swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
+        database = InstagramClientDatabase.getInstance(getActivity());
+
+        instagramPosts = new ArrayList<>();
+        adapter = new InstagramPostsAdapter(instagramPosts);
 
         setupSearchListener(instagramClient);
+
+        rvPosts.setAdapter(adapter);
+
         fetchUserPosts(instagramClient);
         return view;
     }
@@ -68,18 +84,26 @@ public class PostsFragment extends Fragment {
     }
 
     public void fetchUserPosts(InstagramClient client) {
-        client.getPopularFeed(new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                fetchCode(response);
-            }
+        if (isNetworkAvailable()) {
+            client.getPopularFeed(new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    fetchCode(response);
+                }
 
-            @Override
-            public void onFailure(int statusCode, Header[] headers, String res, Throwable t) {
-                // called when response HTTP status is "4XX" (eg. 401, 403, 404)
-                Toast.makeText(getActivity(), "onFailure of getPopularFeed", Toast.LENGTH_LONG).show();
-            }
-        });
+                @Override
+                public void onFailure(int statusCode, Header[] headers, String res, Throwable t) {
+                    // called when response HTTP status is "4XX" (eg. 401, 403, 404)
+                    Toast.makeText(getActivity(), "onFailure of getPopularFeed", Toast.LENGTH_LONG).show();
+                }
+            });
+        } else {
+            Toast.makeText(getActivity(), "From SQLite database", Toast.LENGTH_LONG).show();
+            List<InstagramPost> newPosts = database.getAllInstagramPosts();
+            instagramPosts.clear();
+            instagramPosts.addAll(newPosts);
+            adapter.notifyDataSetChanged();
+        }
     }
 
     public void fetchTimelineAsync(int page, InstagramClient client) {
@@ -99,14 +123,14 @@ public class PostsFragment extends Fragment {
     }
 
 
-
-
     public void fetchCode(JSONObject response) {
-        rvPosts = (RecyclerView) getView().findViewById(R.id.rvPosts);
-        instagramPosts = Utils.decodePostsFromJsonResponse(response);
-        InstagramPostsAdapter adapter = new InstagramPostsAdapter(instagramPosts);
-        rvPosts.setAdapter(adapter);
-        rvPosts.setLayoutManager(new LinearLayoutManager(getActivity()));
+        instagramPosts.clear();
+        List<InstagramPost> newPosts = Utils.decodePostsFromJsonResponse(response);
+        instagramPosts.addAll(newPosts);
+        //adapter = new InstagramPostsAdapter(newPosts);
+        adapter.notifyDataSetChanged();
+        database.emptyAllTables();;
+        database.addInstagramPosts(newPosts);
     }
 
     public static PostsFragment newInstance() {
@@ -114,4 +138,10 @@ public class PostsFragment extends Fragment {
         return postsFragment;
     }
 
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
+    }
 }

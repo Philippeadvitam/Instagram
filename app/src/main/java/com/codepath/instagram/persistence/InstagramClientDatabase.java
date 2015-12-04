@@ -149,17 +149,58 @@ public class InstagramClientDatabase extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // TODO: Implement this method
-        emptyAllTables();
+        if (oldVersion != newVersion) {
+            db.execSQL("DROP TABLE IF EXISTS " + TABLE_POSTS);
+            db.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS);
+            onCreate(db);
+        }
     }
 
     public void emptyAllTables() {
         // TODO: Implement this method to delete all rows from all tables
+        SQLiteDatabase db = getWritableDatabase();
+        db.beginTransaction();
+        try {
+            db.delete(TABLE_POSTS, null, null);
+            db.delete(TABLE_USERS, null, null);
+            db.setTransactionSuccessful();
+        } catch (Exception e) {
+            Log.wtf(TAG, "Error while trying to empty all tables in database");
+            e.printStackTrace();
+        } finally {
+            db.endTransaction();
+        }
     }
 
     public void addInstagramPosts(List<InstagramPost> posts) {
         // TODO: Implement this method
         // Take a look at the helper methods addImage, addComment, etc as you implement this method
         // It's also a good idea to do this work in a transaction
+        if (posts == null) {
+            throw new IllegalArgumentException(String.format("Attemping to add a null list of posts to %s", DATABASE_NAME));
+        }
+
+        // should be done off UI thread
+        SQLiteDatabase db = getWritableDatabase();
+        db.beginTransaction();
+        try {
+            for (InstagramPost post : posts) {
+                // Check user existence first
+                long userId = addorUpdateUser(post.user);
+
+                ContentValues values = new ContentValues();
+                values.put(KEY_POST_USER_ID_FK, userId);
+                values.put(KEY_POST_CREATED_TIME, post.createdTime);
+
+                db.insert(TABLE_POSTS, null, values);
+            }
+            db.setTransactionSuccessful();
+        } catch (Exception e) {
+            Log.wtf(TAG, "Error while trying to add posts to database");
+            e.printStackTrace();
+        } finally {
+            db.endTransaction();
+        }
     }
 
     // Poor man's "upsert".
@@ -181,7 +222,7 @@ public class InstagramClientDatabase extends SQLiteOpenHelper {
         long userId = -1;
 
         // First try to update the user in case the user already exists in DB
-        int rows = db.update(TABLE_USERS, values, KEY_USER_NAME + "= ?", new String[] {user.userName});
+        int rows = db.update(TABLE_USERS, values, KEY_USER_NAME + "= ?", new String[]{user.userName});
 
         // Check if update succeeded
         if (rows == 1) {
