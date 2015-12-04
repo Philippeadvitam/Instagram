@@ -17,6 +17,7 @@ import com.codepath.instagram.helpers.InstagramPostsAdapter;
 import com.codepath.instagram.helpers.Utils;
 import com.codepath.instagram.models.InstagramClient;
 import com.codepath.instagram.models.InstagramPost;
+import com.codepath.instagram.persistence.InstagramClientDatabase;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
@@ -32,13 +33,21 @@ public class PostsFragment extends Fragment {
     private SwipeRefreshLayout swipeContainer;
     public List<InstagramPost> instagramPosts;
     RecyclerView rvPosts;
+    InstagramClientDatabase database;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_posts, container, false);
-        swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
         final InstagramClient instagramClient = new InstagramClient(getActivity());
+        swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
+
+        setupSearchListener(instagramClient);
+        fetchUserPosts(instagramClient);
+        return view;
+    }
+
+    private void setupSearchListener(final InstagramClient client) {
         // Setup refresh listener which triggers new data loading
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -46,17 +55,20 @@ public class PostsFragment extends Fragment {
                 // Your code to refresh the list here.
                 // Make sure you call swipeContainer.setRefreshing(false)
                 // once the network request has completed successfully.
-                fetchTimelineAsync(0, instagramClient);
+                fetchTimelineAsync(0, client);
                 //Toast.makeText(getActivity(), "Refreshing", Toast.LENGTH_LONG).show();
             }
         });
         // Configure the refreshing colors
-        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+        swipeContainer.setColorSchemeResources(
+                android.R.color.holo_blue_bright,
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
+    }
 
-        instagramClient.getPopularFeed(new JsonHttpResponseHandler() {
+    public void fetchUserPosts(InstagramClient client) {
+        client.getPopularFeed(new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 fetchCode(response);
@@ -68,7 +80,6 @@ public class PostsFragment extends Fragment {
                 Toast.makeText(getActivity(), "onFailure of getPopularFeed", Toast.LENGTH_LONG).show();
             }
         });
-        return view;
     }
 
     public void fetchTimelineAsync(int page, InstagramClient client) {
@@ -86,6 +97,8 @@ public class PostsFragment extends Fragment {
             }
         });
     }
+
+
 
 
     public void fetchCode(JSONObject response) {

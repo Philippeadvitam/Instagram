@@ -149,6 +149,7 @@ public class InstagramClientDatabase extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // TODO: Implement this method
+        emptyAllTables();
     }
 
     public void emptyAllTables() {
